@@ -553,12 +553,9 @@
 
     // mentor dropdowns
     const mentors = uniqueSorted(students.map(s=>s.sipMentor));
-    const classMentors = uniqueSorted(students.map(s=>s.classMentor));
-    $('mentorSelect').innerHTML = '<option value="">All Industry / SIP Mentors</option>' +
+       $('mentorSelect').innerHTML = '<option value="">SIP Mentors</option>' +
       mentors.map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join('');
-    $('classMentorSelect').innerHTML = '<option value="">All Class Mentors</option>' +
-      classMentors.map(m=>`<option value="${esc(m)}">${esc(m)}</option>`).join('');
-
+    
     // week pills
     const weekNums = Object.keys(students[0].weeks).map(n=>parseInt(n,10)).sort((a,b)=>a-b);
     $('weekPills').innerHTML = weekNums.map(w =>
@@ -579,12 +576,10 @@
   function getFiltered(){
     const q = $('searchBox').value.trim().toLowerCase();
     const mentor = $('mentorSelect').value;
-    const classMentor = $('classMentorSelect').value;
-    return students.filter(s => {
+     return students.filter(s => {
       if(q && !( (s.name||'').toLowerCase().includes(q) || (s.erp||'').toLowerCase().includes(q) )) return false;
       if(mentor && s.sipMentor !== mentor) return false;
-      if(classMentor && s.classMentor !== classMentor) return false;
-      return true;
+          return true;
     });
   }
 
@@ -614,9 +609,7 @@
   function renderTable(list){
     $('theadRow').innerHTML = `
       <th>Student</th>
-      <th>Section</th>
-      <th>Class Mentor</th>
-      <th>Industry / SIP Mentor</th>
+      <th>SIP Mentor</th>
       <th>Joining Report</th>
       <th>Classroom</th>
       <th class="week-head">Attend</th>
@@ -631,8 +624,6 @@
       return `
       <tr data-idx="${students.indexOf(s)}">
         <td class="name-cell">${esc(s.name)||'—'}<span class="erp">${esc(s.erp)}</span></td>
-        <td>${esc(s.section)||'—'}</td>
-        <td class="mentor-tag">${esc(s.classMentor)||'—'}</td>
         <td class="mentor-tag">${esc(s.sipMentor)||'—'}</td>
         <td>${linkPill(s.joiningLink,'Report ↗')}</td>
         <td>${linkPill(s.classroom,'Classroom ↗')}</td>
